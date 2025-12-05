@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  agentfa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    container_name: agentfa
+    ports:
+      - "3003:80"
+    restart: unless-stopped
+    volumes:
+      # Optional: mount dist for development
+      # - ./dist:/usr/share/nginx/html
+    networks:
+      - agentfa-network
+
+networks:
+  agentfa-network:
+    driver: bridge
+
