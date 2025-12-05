@@ -4,17 +4,19 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* ./
+COPY package.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build arguments for environment variables
-ARG GEMINI_API_KEY
-ENV GEMINI_API_KEY=$GEMINI_API_KEY
+# Use Docker secrets for API key
+RUN --mount=type=secret,id=GEMINI_API_KEY \
+    if [ -f /run/secrets/GEMINI_API_KEY ]; then \
+        echo "GEMINI_API_KEY=$(cat /run/secrets/GEMINI_API_KEY)" > .env; \
+    fi
 
 # Build the application
 RUN npm run build

@@ -5,14 +5,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      secrets:
+        - GEMINI_API_KEY
     container_name: agentfa
     ports:
       - "3003:80"
     restart: unless-stopped
     networks:
       - agentfa-network
+
+secrets:
+  GEMINI_API_KEY:
+    environment: GEMINI_API_KEY
 
 networks:
   agentfa-network:
