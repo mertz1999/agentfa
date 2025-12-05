@@ -11,9 +11,6 @@ services:
     ports:
       - "3003:80"
     restart: unless-stopped
-    volumes:
-      # Optional: mount dist for development
-      # - ./dist:/usr/share/nginx/html
     networks:
       - agentfa-network
 
